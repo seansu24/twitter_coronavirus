@@ -8,7 +8,7 @@ Approximately 500 million tweets are sent every day, and about 2% of them are *g
 
 ## Methodology
 
-The tweets are processed with a MapReduce pattern. A map step scans each day's archive independently, counting hashtag usage by language and by country. The  per-day results are written to the `outputs/` folder. A reduce step then combines them into a single set of totals, which are plotted with matplotlib.
+The tweets are processed with a MapReduce pattern. A map step scans each day's archive independently, counting hashtag usage by language and by country. The per-day results are written to the `outputs/` folder. A reduce step then combines them into a single set of totals, which are plotted with matplotlib.
 
 ## Running It
 
@@ -17,6 +17,8 @@ Map each day's archive in parallel. Each call to `map.py` runs independently, so
     ./run_maps.sh
 
 This writes one `.lang` and one `.country` file per day into `outputs/`.
+
+Note: `run_maps.sh` points at a specific dataset directory on the course server. Change the path in that file if your data lives elsewhere.
 
 Reduce the per-day results into a single set of totals:
 
@@ -28,13 +30,13 @@ Plot the totals for a given hashtag:
     python src/visualize.py --input_path reduced/reduced.lang --key '#coronavirus' --output_path img/reduced.lang.coronavirus.png
     python src/visualize.py --input_path reduced/reduced.country --key '#coronavirus' --output_path img/reduced.country.coronavirus.png
     python src/visualize.py --input_path reduced/reduced.lang --key '#코로나바이러스' --output_path img/reduced.lang.korean.png
-    python src/visualize.py --input_path reduced/reduced.country --key '#코로나바이러스' --output_path img/reduced.korean.country.png
+    python src/visualize.py --input_path reduced/reduced.country --key '#코로나바이러스' --output_path img/reduced.country.korean.png
 
 Plot daily hashtag usage across the year, reading directly from `outputs/`:
 
     python src/alternative_reduce.py --hashtags '#coronavirus' '#covid19' '#corona'
 
-All commands are run from the repository root.
+All commands are run from the repository root. Hashtags are quoted because an unquoted `#` begins a comment in the shell.
 
 ## Results
 
